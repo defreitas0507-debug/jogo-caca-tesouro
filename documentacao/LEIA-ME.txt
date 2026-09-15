@@ -1,0 +1,4 @@
+Documentacao do projeto Jogo Caca ao Tesouro.
+
+Os documentos desta pasta apresentam os requisitos,
+regras de negocio, documentacao e evolucao do projeto.
