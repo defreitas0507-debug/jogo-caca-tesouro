@@ -32,10 +32,11 @@ programa
         inteiro casa = 0
         inteiro linha = 0
         inteiro coluna = 0
+        inteiro casasNivel1 = 0
 
 
         escreva("========================================\n")
-        escreva("           CAÇA AO TESOURO\n")
+        escreva("           CACA AO TESOURO\n")
         escreva("========================================\n\n")
 
 
@@ -55,6 +56,10 @@ programa
             leia(percentualNivel3)
 
 
+            // Calcula quantas casas o Nivel I tera
+            casasNivel1 = (25 * percentualNivel1 + 50) / 100
+
+
             se (percentualNivel1 < 0 ou percentualNivel2 < 0 ou percentualNivel3 < 0)
             {
                 escreva("\nOs percentuais nao podem ser negativos.\n")
@@ -63,8 +68,19 @@ programa
             {
                 escreva("\nERRO: A soma dos percentuais deve ser exatamente 100%.\n")
             }
+            senao se (casasNivel1 > 23)
+            {
+                escreva("\nERRO: Os niveis II e III precisam ter pelo menos 2 casas no total.\n")
+                escreva("Digite novos percentuais.\n")
+            }
 
-        } enquanto (percentualNivel1 < 0 ou percentualNivel2 < 0 ou percentualNivel3 < 0 ou percentualNivel1 + percentualNivel2 + percentualNivel3 != 100)
+        } enquanto (
+            percentualNivel1 < 0 ou
+            percentualNivel2 < 0 ou
+            percentualNivel3 < 0 ou
+            percentualNivel1 + percentualNivel2 + percentualNivel3 != 100 ou
+            casasNivel1 > 23
+        )
 
 
         // ========================================
@@ -312,16 +328,8 @@ programa
         // ------------------------------------------
         // Calcula os limites dos niveis
         // ------------------------------------------
-        //
-        // Regra de arredondamento convencional:
-        //
-        // 6,2 -> 6
-        // 7,8 -> 8
-        //
-        // O +50 permite fazer o arredondamento
-        // usando numeros inteiros.
-        // ------------------------------------------
 
+        // Arredondamento convencional
         fimNivel1 = (25 * percentualNivel1 + 50) / 100
 
         fimNivel2 = (25 * (percentualNivel1 + percentualNivel2) + 50) / 100
@@ -400,10 +408,6 @@ programa
             linha = casa / 5
             coluna = casa % 5
 
-
-            // Se a casa estiver ocupada,
-            // sorteia novamente
-
         } enquanto (matriz[linha][coluna] != 0)
 
 
@@ -411,7 +415,7 @@ programa
         matriz[linha][coluna] = elemento
 
 
-        // Se for o risco, guarda sua posição
+        // Se for o risco, guarda sua posicao
         se (elemento == 3)
         {
             linhaRisco = linha
@@ -438,7 +442,6 @@ programa
     {
         // Acrescenta o bonus na bateria
         bateria = bateria + valor
-
 
         // Registra os creditos obtidos
         creditos = creditos + valor
