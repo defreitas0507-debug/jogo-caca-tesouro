@@ -2,47 +2,65 @@ programa
 {
     inclua biblioteca Util --> u
 
+    // ==========================================
     // MATRIZ 5x5
+    // ==========================================
+
     inteiro matriz[5][5]
 
+    // ==========================================
     // DADOS DO JOGO
+    // ==========================================
+
     inteiro bateria = 100
     inteiro creditos = 0
     inteiro rodadas = 0
     inteiro nivel = 1
     inteiro tesouroEncontrado = 0
 
+    // ==========================================
     // PERCENTUAIS DOS NIVEIS
+    // ==========================================
+
     inteiro percentualNivel1 = 0
     inteiro percentualNivel2 = 0
     inteiro percentualNivel3 = 0
 
+    // ==========================================
     // LIMITES DOS NIVEIS
+    // ==========================================
+
     inteiro fimNivel1 = 0
     inteiro fimNivel2 = 0
     inteiro fimNivel3 = 25
 
+    // ==========================================
     // POSICAO DO RISCO
+    // ==========================================
+
     inteiro linhaRisco = 0
     inteiro colunaRisco = 0
 
+
+    // ==========================================
+    // PROGRAMA PRINCIPAL
+    // ==========================================
 
     funcao inicio()
     {
         inteiro casa = 0
         inteiro linha = 0
         inteiro coluna = 0
-        inteiro casasNivel1 = 0
-
+        inteiro i = 0
+        inteiro j = 0
 
         escreva("========================================\n")
-        escreva("           CACA AO TESOURO\n")
+        escreva("          CACA AO TESOURO\n")
         escreva("========================================\n\n")
 
-
-        // ========================================
+        // ======================================
         // ENTRADA DOS PERCENTUAIS
-        // ========================================
+        // ======================================
 
         faca
         {
@@ -55,53 +73,50 @@ programa
             escreva("Digite o percentual do Nivel III: ")
             leia(percentualNivel3)
 
-
-            // Calcula quantas casas o Nivel I tera
-            casasNivel1 = (25 * percentualNivel1 + 50) / 100
-
-
             se (percentualNivel1 < 0 ou percentualNivel2 < 0 ou percentualNivel3 < 0)
             {
-                escreva("\nOs percentuais nao podem ser negativos.\n")
+                escreva("\nERRO: Os percentuais nao podem ser negativos.\n\n")
             }
             senao se (percentualNivel1 + percentualNivel2 + percentualNivel3 != 100)
             {
-                escreva("\nERRO: A soma dos percentuais deve ser exatamente 100%.\n")
-            }
-            senao se (casasNivel1 > 23)
-            {
-                escreva("\nERRO: Os niveis II e III precisam ter pelo menos 2 casas no total.\n")
-                escreva("Digite novos percentuais.\n")
+                escreva("\nERRO: A soma dos percentuais deve ser exatamente 100%.\n\n")
             }
 
-        } enquanto (
-            percentualNivel1 < 0 ou
-            percentualNivel2 < 0 ou
-            percentualNivel3 < 0 ou
-            percentualNivel1 + percentualNivel2 + percentualNivel3 != 100 ou
-            casasNivel1 > 23
-        )
+        } enquanto (percentualNivel1 < 0 ou percentualNivel2 < 0 ou percentualNivel3 < 0 ou percentualNivel1 + percentualNivel2 + percentualNivel3 != 100)
 
 
-        // ========================================
+        // ======================================
         // GERA O CENARIO
-        // ========================================
+        // ======================================
 
         GerarCenario()
 
 
         escreva("\n========================================\n")
-        escreva("            INICIO DO JOGO\n")
+        escreva("        CONFIGURACAO DO CENARIO\n")
+        escreva("========================================\n")
+
+        escreva("Nivel I: casas 01 ate ", fimNivel1, "\n")
+        escreva("Nivel II: casas ", fimNivel1 + 1, " ate ", fimNivel2, "\n")
+        escreva("Nivel III: casas ", fimNivel2 + 1, " ate 25\n")
+
+
+        // ======================================
+        // INICIO DO JOGO
+        // ======================================
+
+        escreva("\n========================================\n")
+        escreva("             INICIO DO JOGO\n")
         escreva("========================================\n")
 
 
-        // ========================================
+        // ======================================
         // PERCORRE AS 25 CASAS
-        // ========================================
+        // ======================================
 
         para (casa = 0; casa < 25; casa++)
         {
-            // Verifica se possui bateria suficiente
+            // Verifica se existe bateria suficiente
             // para iniciar uma nova rodada
 
             se (bateria < 10)
@@ -122,13 +137,14 @@ programa
             coluna = casa % 5
 
 
-            // Registra a rodada
+            // Conta a rodada
+
             rodadas++
 
 
-            // ====================================
-            // DESCOBRE O NIVEL DA CASA
-            // ====================================
+            // ==================================
+            // IDENTIFICA O NIVEL DA CASA
+            // ==================================
 
             se (casa < fimNivel1)
             {
@@ -151,19 +167,18 @@ programa
             escreva("Nivel: ", nivel, "\n")
 
 
-            // ====================================
-            // CONSUMO DA RODADA
-            // ====================================
+            // ==================================
+            // DIMINUI A BATERIA
+            // ==================================
 
             DiminuirBateria()
-
 
             escreva("Bateria apos movimento: ", bateria, "\n")
 
 
-            // ====================================
+            // ==================================
             // VERIFICA O CONTEUDO DA CASA
-            // ====================================
+            // ==================================
 
             se (matriz[linha][coluna] == 1)
             {
@@ -190,6 +205,7 @@ programa
                 tesouroEncontrado = 1
 
                 // O jogo termina imediatamente
+
                 pare
             }
             senao
@@ -203,22 +219,24 @@ programa
         }
 
 
-        // ========================================
+        // ======================================
         // RESULTADO FINAL
-        // ========================================
+        // ======================================
 
         escreva("\n\n========================================\n")
         escreva("           RESULTADO DO JOGO\n")
         escreva("========================================\n\n")
 
 
-        // ========================================
+        // ======================================
         // MOSTRA A MATRIZ
-        // ========================================
+        // ======================================
 
-        para (inteiro i = 0; i < 5; i++)
+        escreva("Cenario final:\n\n")
+
+        para (i = 0; i < 5; i++)
         {
-            para (inteiro j = 0; j < 5; j++)
+            para (j = 0; j < 5; j++)
             {
                 se (matriz[i][j] == 0)
                 {
@@ -246,9 +264,9 @@ programa
         }
 
 
-        // ========================================
+        // ======================================
         // INFORMACOES FINAIS
-        // ========================================
+        // ======================================
 
         escreva("\nBateria restante: ", bateria, " creditos\n")
 
@@ -285,51 +303,58 @@ programa
         escreva(colunaRisco)
         escreva("]\n")
 
-
         escreva("Quantidade de rodadas: ", rodadas, "\n")
 
 
-        escreva("========================================\n")
-
+        escreva("\n========================================\n")
 
         se (tesouroEncontrado == 1)
         {
-            escreva("          VOCE VENCEU!\n")
+            escreva("             VOCE VENCEU!\n")
         }
         senao
         {
-            escreva("          VOCE PERDEU!\n")
+            escreva("             VOCE PERDEU!\n")
         }
-
 
         escreva("========================================\n")
     }
 
 
-    // ==================================================
-    // GERAR CENARIO
-    // ==================================================
+    // ==========================================
+    // FUNCAO GERAR CENARIO
+    // ==========================================
 
     funcao GerarCenario()
     {
-        // ------------------------------------------
-        // Inicializa a matriz
-        // ------------------------------------------
+        inteiro i = 0
+        inteiro j = 0
 
-        para (inteiro i = 0; i < 5; i++)
+        // ======================================
+        // DEIXA TODAS AS CASAS VAZIAS
+        // ======================================
+
+        para (i = 0; i < 5; i++)
         {
-            para (inteiro j = 0; j < 5; j++)
+            para (j = 0; j < 5; j++)
             {
                 matriz[i][j] = 0
             }
         }
 
 
-        // ------------------------------------------
-        // Calcula os limites dos niveis
-        // ------------------------------------------
+        // ======================================
+        // CALCULA OS LIMITES DOS NIVEIS
+        // ======================================
+        //
+        // Exemplo:
+        // 25% de 25 = 6,25 -> 6 casas
+        // 35% de 25 = 8,75 -> 9 casas
+        // 40% de 25 = 10 casas
+        //
+        // O +50 permite arredondamento
+        // usando numeros inteiros.
 
-        // Arredondamento convencional
         fimNivel1 = (25 * percentualNivel1 + 50) / 100
 
         fimNivel2 = (25 * (percentualNivel1 + percentualNivel2) + 50) / 100
@@ -337,59 +362,42 @@ programa
         fimNivel3 = 25
 
 
-        escreva("\n========================================\n")
-        escreva("           CONFIGURACAO DOS NIVEIS\n")
-        escreva("========================================\n")
-
-        escreva("Nivel I: casas 01 ate ", fimNivel1, "\n")
-
-        escreva("Nivel II: casas ")
-        escreva(fimNivel1 + 1)
-        escreva(" ate ")
-        escreva(fimNivel2)
-        escreva("\n")
-
-        escreva("Nivel III: casas ")
-        escreva(fimNivel2 + 1)
-        escreva(" ate 25\n")
-
-
-        // ------------------------------------------
-        // Sorteia B05
-        // Pode estar em qualquer nivel
-        // ------------------------------------------
+        // ======================================
+        // SORTEIA B05
+        // PODE ESTAR EM QUALQUER NIVEL
+        // ======================================
 
         SortearElemento(1, 0, 24)
 
 
-        // ------------------------------------------
-        // Sorteia B10
-        // Pode estar em qualquer nivel
-        // ------------------------------------------
+        // ======================================
+        // SORTEIA B10
+        // PODE ESTAR EM QUALQUER NIVEL
+        // ======================================
 
         SortearElemento(2, 0, 24)
 
 
-        // ------------------------------------------
-        // Sorteia RISCO
-        // Somente Nivel II ou Nivel III
-        // ------------------------------------------
+        // ======================================
+        // SORTEIA RISCO
+        // SOMENTE NIVEL II OU III
+        // ======================================
 
         SortearElemento(3, fimNivel1, 24)
 
 
-        // ------------------------------------------
-        // Sorteia TESOURO
-        // Somente Nivel II ou Nivel III
-        // ------------------------------------------
+        // ======================================
+        // SORTEIA TESOURO
+        // SOMENTE NIVEL II OU III
+        // ======================================
 
         SortearElemento(4, fimNivel1, 24)
     }
 
 
-    // ==================================================
-    // SORTEAR ELEMENTO
-    // ==================================================
+    // ==========================================
+    // FUNCAO SORTEAR ELEMENTO
+    // ==========================================
 
     funcao SortearElemento(inteiro elemento, inteiro inicio, inteiro fim)
     {
@@ -397,25 +405,27 @@ programa
         inteiro linha = 0
         inteiro coluna = 0
 
-
         faca
         {
             // Sorteia uma casa
+
             casa = u.sorteia(inicio, fim)
 
-
             // Converte para linha e coluna
+
             linha = casa / 5
             coluna = casa % 5
 
         } enquanto (matriz[linha][coluna] != 0)
 
 
-        // Coloca o elemento na casa
+        // Coloca o elemento na matriz
+
         matriz[linha][coluna] = elemento
 
 
-        // Se for o risco, guarda sua posicao
+        // Guarda a posicao do risco
+
         se (elemento == 3)
         {
             linhaRisco = linha
@@ -424,9 +434,9 @@ programa
     }
 
 
-    // ==================================================
-    // DIMINUIR BATERIA
-    // ==================================================
+    // ==========================================
+    // FUNCAO DIMINUIR BATERIA
+    // ==========================================
 
     funcao DiminuirBateria()
     {
@@ -434,27 +444,27 @@ programa
     }
 
 
-    // ==================================================
-    // BONUS
-    // ==================================================
+    // ==========================================
+    // FUNCAO BONUS
+    // ==========================================
 
     funcao Bonus(inteiro valor)
     {
-        // Acrescenta o bonus na bateria
         bateria = bateria + valor
 
-        // Registra os creditos obtidos
         creditos = creditos + valor
     }
 
 
-    // ==================================================
-    // RISCO
-    // ==================================================
+    // ==========================================
+    // FUNCAO RISCO
+    // ==========================================
 
     funcao Risco()
     {
-        // Penalidade do risco
+        // O risco acontece depois dos 10
+        // creditos de consumo da rodada.
+
         bateria = bateria - 3
     }
 }
